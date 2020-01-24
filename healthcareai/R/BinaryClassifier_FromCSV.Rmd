@@ -1,0 +1,66 @@
+---
+title: "Untitled"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r}
+rm(list=ls())
+getwd()
+setwd("~/GitHub/LearnMachineLearn/healthcareai")
+
+library(ggplot2)
+library(healthcareai)
+```
+
+
+``````{r, results = 'hide', echo=FALSE, message = FALSE, warning = FALSE}
+df <- read.csv("SimData/SimData.csv")
+```
+
+
+```{r, results= 'hide', echo=FALSE, message=FALSE, warning=FALSE}
+models <- machine_learn(df, patient_id, yrs_smoker, diabetes, outcome = diabetes_type)
+```
+
+
+```{r, results = 'hide', echo=FALSE, message = FALSE, warning = FALSE}
+predictions <- predict(models)
+plot(predictions)
+
+ggplot(df, aes(predictions$diabetes_type, predictions$predicted_diabetes_type, 
+               colour = predictions$diabetes_type)) + geom_point(alpha = 0.1)
+
+plot(predictions$diabetes_type, predictions$predicted_diabetes_type, pch=19,
+     col = rgb(red = 1, green = 0.2, blue = 0.5, alpha = 0.1),
+     cex = 4)
+```
+
+
+
+```{r, results= 'hide', echo=FALSE, message=FALSE, warning=FALSE}
+models <- machine_learn(df, patient_id, yrs_smoker, diabetes_type, outcome = diabetes)
+```
+
+
+```{r, results = 'hide', echo=FALSE, message = FALSE, warning = FALSE}
+predictions <- predict(models)
+plot(predictions)
+
+ggplot(df, aes(predictions$diabetes_type, predictions$predicted_diabetes_type, 
+               colour = predictions$diabetes_type)) + geom_point(alpha = 0.1)
+
+plot(predictions$diabetes_type, predictions$predicted_diabetes_type, pch=19,
+     col = rgb(red = 1, green = 0.2, blue = 0.5, alpha = 0.1),
+     cex = 4)
+```
+
+
+```{r, results = 'hide', echo=FALSE, message = FALSE, warning = FALSE}
+#missingness(df) %>% 
+#plot()
+```

@@ -1,0 +1,51 @@
+---
+title: "Untitled"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r}
+rm(list=ls())
+getwd()
+setwd("~/GitHub/LearnMachineLearn/healthcareai")
+```
+
+
+```{r, results= 'hide', echo=FALSE, message=FALSE, warning=FALSE}
+models <- machine_learn(pima_diabetes, patient_id, outcome = diabetes)
+# > Algorithms Trained: Random Forest, eXtreme Gradient Boosting, and glmnet
+# > Model Name: diabetes
+# > Target: diabetes
+# > Class: Classification
+# > Performance Metric: AUROC
+# > Number of Observations: 768
+# > Number of Features: 12
+# > Models Trained: 2018-09-01 18:30:02 
+# > 
+# > Models tuned via 5-fold cross validation over 10 combinations of hyperparameter values.
+# > Best model: Random Forest
+# > AUPR = 0.71, AUROC = 0.84
+# > Optimal hyperparameter values:
+# >   mtry = 2
+# >   splitrule = extratrees
+# >   min.node.size = 12
+```
+
+
+
+```{r, results = 'hide', echo=FALSE, message = FALSE, warning = FALSE}
+predictions <- predict(models, outcome_groups = TRUE)
+plot(predictions)
+```
+
+
+
+```{r, results = 'hide', echo=FALSE, message = FALSE, warning = FALSE}
+missingness(pima_diabetes) %>% 
+plot()
+```
+
